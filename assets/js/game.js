@@ -13,6 +13,11 @@ var enemyNames = ["Megatron", "Starscream", "Devastator"];
 var enemyHealth = 50;
 var enemyAttack = 12;
 
+var randomNumber = function (min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+    return value;
+};
+
 var fight = function(enemyName) {
 while (playerHealth > 0 && enemyHealth > 0) {
     // ask player if they'd liked to fight or run       
@@ -27,16 +32,17 @@ while (playerHealth > 0 && enemyHealth > 0) {
             if (confirmSkip) { 
                 window.alert(playerName + ' fled from ' + enemyName + '. ' + playerName + ' dropped 10 credits in their cowardly escape.');
                  // subtract money from playerMoney for skipping
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney - 10);
                 console.log(playerName + " credits: ", playerMoney);
                 break; 
             }
         }    
               
         //Subtract the value of playerAttack from enemyHealth and use that result to update the value in the enemyHealth variable
-        enemyHealth = enemyHealth - playerAttack;
+        var damage = randomNumber(playerAttack - 3, playerAttack);
+        enemyHealth = Math.max(0, enemyHealth - damage);
         console.log(
-        playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
+        playerName + ' attacked ' + enemyName + '. Damage: ' + damage + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
         );
 
         // check enemy's health
@@ -53,9 +59,10 @@ while (playerHealth > 0 && enemyHealth > 0) {
         }
 
         //Subtract the value of enemyAttack from playerHealth and use that result to update the value in the playerHealth variable
-        playerHealth = playerHealth - enemyAttack;
+        var damage = randomNumber(enemyAttack -3, enemyAttack);
+        playerHealth = Math.max(0, playerHealth - damage);
         console.log(
-        enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
+        enemyName + ' attacked ' + playerName + '. Damage: ' + damage + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
         );
         
         // check player's health
@@ -71,7 +78,7 @@ while (playerHealth > 0 && enemyHealth > 0) {
 
 // function to start a new game
 var startGame = function() {
-     debugger
+    // debugger
     // reset player stats
     playerHealth = 100
     playerAttack = 10
@@ -86,7 +93,7 @@ var startGame = function() {
             var pickedEnemyName = enemyNames[i];
 
             // reset enemyHealth before starting new fight
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
 
             // use debugger to pause script from running and check what's going on at that moment in the code
             //debugger;
