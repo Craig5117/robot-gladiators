@@ -67,28 +67,44 @@ var enemyInfo = [
     }
 ];
 
+var fightOrSkip = function() {
+    // ask player if they'd like to fight or skip using fightOrSkip function
+    var promptFight = window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+   
+  
+    // Conditional Recursive Function Call
+    if (promptFight === "" || promptFight === null) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
 
+    // convert promptFight to all lowercase so we can check with less options
+    promptFight = promptFight.toLowerCase();
+  
+    // if player picks "skip" confirm and then stop the loop
+    if (promptFight === "skip" || promptFight === "s") {
+        // confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+  
+        // if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert('Player fled from battle and dropped 10 credits in their cowardly escape.');
+            // subtract money from playerMoney for skipping
+            playerInfo.playerMoney = playerInfo.money - 10;
+            console.log(playerInfo.name + " credits: ", playerInfo.money);
+            return true;
+        }
+    }
+    return false
+}
 
 var fight = function(enemy) {
-while (playerInfo.health > 0 && enemy.health > 0) {
-    // ask player if they'd liked to fight or run       
-    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'F' or 'S' to choose.");
-        
-        // if player picks "skip" confirm and then stop the loop
-        if (promptFight === "s" || promptFight === "S") {
-            // confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-            // if yes (true), leave fight
-            if (confirmSkip) { 
-                window.alert(playerInfo.name + ' fled from ' + enemy.name + '. ' + playerInfo.name + ' dropped 10 credits in their cowardly escape.');
-                 // subtract money from playerInfo.money for skipping
-                playerInfo.money = Math.max(0, playerInfo.money - 10);
-                console.log(playerInfo.name + " credits: ", playerInfo.money);
-                break; 
-            }
-        }    
-              
+    while (playerInfo.health > 0 && enemy.health > 0) {
+        // ask player if they'd liked to fight or run       
+        if (fightOrSkip()) {
+            break;
+        }
+                
         //Subtract the value of playerInfo.attack from enemy.health and use that result to update the value in the enemy.health variable
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
         enemy.health = Math.max(0, enemy.health - damage);
@@ -101,9 +117,9 @@ while (playerInfo.health > 0 && enemy.health > 0) {
             window.alert(enemy.name + ' has been destroyed!');
 
             // award player money for winning
-             playerInfo.money = playerInfo.money + 20;
-             console.log(playerInfo.name + " recieved 20 credits for winning. " + playerInfo.name +" now has " + playerInfo.money + " credits.");
-             
+                playerInfo.money = playerInfo.money + 20;
+                console.log(playerInfo.name + " recieved 20 credits for winning. " + playerInfo.name +" now has " + playerInfo.money + " credits.");
+                
             // leave while() loop since enemy is dead
             break;
         } else { 
@@ -125,7 +141,7 @@ while (playerInfo.health > 0 && enemy.health > 0) {
         } else {
             window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
         }
-     }
+    }
 };
 
 // function to start a new game
