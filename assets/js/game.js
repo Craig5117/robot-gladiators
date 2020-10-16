@@ -88,9 +88,9 @@ var fightOrSkip = function() {
   
         // if yes (true), leave fight
         if (confirmSkip) {
-            window.alert('Player fled from battle and dropped 10 credits in their cowardly escape.');
+            window.alert('Player fled from battle and recieved a credits penalty.');
             // subtract money from playerMoney for skipping
-            playerInfo.playerMoney = playerInfo.money - 10;
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
             console.log(playerInfo.name + " credits: ", playerInfo.money);
             return true;
         }
@@ -208,22 +208,17 @@ var endGame = function() {
 
 var shop = function() {
      // ask player what they'd like to do
-    var shopOptionPrompt = window.prompt("Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.");
+    var shopOptionPrompt = window.prompt("Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one of the following: Enter '1' for REFILL, Enter '2' for UPGRADE, Enter '3' to leave without purchasing.");
     // use switch to carry out action
+    shopOptionPrompt = parseInt(shopOptionPrompt);
     switch (shopOptionPrompt) {
-        case "REFILL": // new case
-        case "refill": // new case
-        case "r":
+        case 1: 
             playerInfo.refillHealth();
             break;
-        case "UPGRADE": // new case
-        case "upgrade": // new case
-        case "u":
+        case 2:
             playerInfo.upgradeAttack();
             break;
-        case "LEAVE": //new case
-        case "leave": // new case
-        case "l":
+        case 3:
             window.alert(playerInfo.name + " left the shop.");
 
             // do nothing, so function will end
